@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人作品集</title>
+    <style>
+        :root {
+            --bg-primary: #121212;
+            --bg-lighter: #141414;
+            --bg-secondary: #1e1e1e;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --border: #2a2a2a;
+            --hover: #2c2c2c;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-lighter);
+            color: var(--text-secondary);
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+        }
+
+        .container {
+            width: 100%;
+            max-width: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* 导航栏样式 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(18, 18, 18, 0.98);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 90%;
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 0;
+        }
+
+        .nav-logo {
+            position: absolute;
+            left: 5%;
+        }
+
+        .nav-links {
+            position: absolute;
+            right: 5%;
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links li {
+            display: inline-block;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 1rem;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        /* 首页样式 */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding-top: 80px;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+        }
+
+        .hero-content p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+        }
+
+        /* 作品展示样式 */
+        .works {
+            padding: 6rem 0;
+            min-height: 100vh;
+        }
+
+        .works-title {
+            font-size: 2rem;
+            color: var(--text-primary);
+            margin-bottom: 4rem;
+            text-align: center;
+        }
+
+        .works-container {
+            width: 90%;
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 4rem;
+        }
+
+        .top-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            width: 75%;
+            margin: 0 auto;
+            gap: 2rem;
+        }
+
+        .bottom-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            width: 100%;
+            gap: 2rem;
+        }
+
+        .work-item {
+            width: 100%;
+            height: 360px;
+        }
+
+        .work-item img {
+            width: 100%;
+            height: 300px;
+            object-fit: contain;
+            display: block;
+            background: none;
+            padding: 0;
+        }
+
+        .work-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .work-title {
+            position: relative;
+            padding: 0.5rem;
+            background: none;
+            color: var(--text-primary);
+            text-align: center;
+            font-size: 1rem;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+        }
+
+        /* 联系方式样式 */
+        .contact {
+            min-height: 100vh;
+            padding: 6rem 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .contact-container {
+            background: none;
+            border-radius: 0;
+            padding: 4rem;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .contact-title {
+            font-size: 2rem;
+            color: var(--text-primary);
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .social-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .social-item {
+            background: none;
+            padding: 2rem;
+            border-radius: 0;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .social-item:hover {
+            background: none;
+            transform: translateY(-5px);
+        }
+
+        .social-icon {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .wechat-icon, .xiaohongshu-icon {
+            width: 40px;
+            height: 40px;
+        }
+
+        .social-name {
+            color: var(--text-primary);
+            font-size: 1.1rem;
+        }
+
+        /* 模态框样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            cursor: pointer;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90vh;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 8px;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: var(--text-primary);
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 0;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .contact-container {
+                padding: 2rem;
+            }
+
+            .works-grid, .bottom-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .works-grid, .bottom-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* 移除之前添加的负边距 */
+        .nav-logo, .nav-links {
+            margin: 0;
+        }
+
+        /* 修改页面基础样式 */
+        section {
+            min-height: 100vh;
+            width: 100%;
+            position: relative;
+            padding-top: 80px;
+            background-color: var(--bg-lighter);
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+        }
+
+        /* 确保首页内容居中 */
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        html {
+            scroll-snap-type: y mandatory;
+        }
+
+        .social-icon span {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 40px;
+        }
+
+        /* 平板端样式 */
+        @media (max-width: 768px) {
+            /* 导航栏调整 */
+            .nav-content {
+                width: 95%;
+            }
+
+            .nav-logo {
+                left: 2.5%;
+            }
+
+            .nav-links {
+                right: 2.5%;
+                gap: 1.5rem;
+            }
+
+            /* 首页内容调整 */
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-content p {
+                font-size: 1.1rem;
+            }
+
+            /* 作品展示调整 */
+            .works-container {
+                width: 95%;
+                gap: 2rem;
+            }
+
+            .top-grid, .bottom-grid {
+                width: 100%;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+            }
+
+            .work-item {
+                height: 300px;
+            }
+
+            .work-item img {
+                height: 240px;
+            }
+        }
+
+        /* 手机端样式 */
+        @media (max-width: 480px) {
+            /* 导航栏调整 */
+            .nav-links {
+                gap: 1rem;
+            }
+
+            /* 首页内容调整 */
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .hero-content p {
+                font-size: 1rem;
+            }
+
+            /* 作品展示调整 */
+            .top-grid, .bottom-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .work-item {
+                height: 280px;
+            }
+
+            .work-item img {
+                height: 220px;
+            }
+
+            /* 联系方式调整 */
+            .contact-container {
+                padding: 2rem 1rem;
+            }
+
+            .social-links {
+                gap: 1.5rem;
+            }
+
+            .social-item {
+                padding: 1.5rem;
+            }
+        }
+
+        .work-item a {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .work-item:hover {
+            transform: translateY(-5px);
+            transition: transform 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="nav-logo">
+                <a href="#home" style="text-decoration: none; color: var(--text-primary);">Vertigob</a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#works">Beat A Fight</a></li>
+                <li><a href="#contact">Find ME</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section id="home" class="hero">
+        <div class="container hero-content">
+            <h1>Beat A Fight</h1>
+            <p>Vertigob</p>
+        </div>
+    </section>
+
+    <section id="works" class="works">
+        <h2 class="works-title">Beat A Fight</h2>
+        <div class="works-container">
+            <div class="works-grid top-grid">
+                <div class="work-item">
+                    <a href="pages/work1.html">
+                        <img src="image/1.png" alt="作品1">
+                        <div class="work-title">Beat A Fight 1</div>
+                    </a>
+                </div>
+                <div class="work-item">
+                    <a href="pages/work2.html">
+                        <img src="image/2.png" alt="作品2">
+                        <div class="work-title">Beat A Fight 2</div>
+                    </a>
+                </div>
+                <div class="work-item">
+                    <a href="pages/work3.html">
+                        <img src="image/3.png" alt="作品3">
+                        <div class="work-title">Beat A Fight 3</div>
+                    </a>
+                </div>
+            </div>
+            <div class="works-grid bottom-grid">
+                <div class="work-item">
+                    <a href="pages/work4.html">
+                        <img src="image/4.png" alt="作品4">
+                        <div class="work-title">Beat A Fight 4</div>
+                    </a>
+                </div>
+                <div class="work-item">
+                    <a href="pages/work5.html">
+                        <img src="image/5.png" alt="作品5">
+                        <div class="work-title">Beat A Fight 5</div>
+                    </a>
+                </div>
+                <div class="work-item">
+                    <a href="pages/work6.html">
+                        <img src="image/6.png" alt="作品6">
+                        <div class="work-title">Beat A Fight 6</div>
+                    </a>
+                </div>
+                <div class="work-item">
+                    <a href="pages/work7.html">
+                        <img src="image/7.png" alt="作品7">
+                        <div class="work-title">Beat A Fight 7</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="modal" id="imageModal" onclick="closeModal()">
+        <span class="modal-close">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
+
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="contact-container">
+                <h2 class="contact-title">Find Me</h2>
+                <div class="social-links">
+                    <div class="social-item">
+                        <a href="https://mp.weixin.qq.com/s/oVRztBs5pKoDMirp51HKLw" target="_blank" style="text-decoration: none;">
+                            <div class="social-icon">
+                                <svg t="1710400589564" class="wechat-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4286" width="40" height="40">
+                                    <path d="M692.313043 347.269565c11.130435 0 22.26087 0 33.391305 2.226087C696.765217 204.8 540.93913 95.721739 362.852174 95.721739c-198.121739 0-360.626087 133.565217-360.626087 302.191305 0 97.947826 53.426087 178.643478 142.469565 242.086956l-35.617391 106.852174 124.434783-62.46087c44.521739 8.904348 80.139130 17.808696 124.434782 17.808696 11.130435 0 22.26087 0 33.391305-2.226087-6.678261-24.486957-11.130435-48.973913-11.130435-75.686956C380.66087 476.382609 521.904348 347.269565 692.313043 347.269565zM498.643478 249.321739c26.713043 0 44.521739 17.808696 44.521739 44.521739 0 26.713043-17.808696 44.521739-44.521739 44.521739-26.713043 0-53.426087-17.808696-53.426087-44.521739C445.217391 267.130435 471.930435 249.321739 498.643478 249.321739zM244.869565 338.365217c-26.713043 0-53.426087-17.808696-53.426087-44.521739 0-26.713043 26.713043-44.521739 53.426087-44.521739 26.713043 0 44.521739 17.808696 44.521739 44.521739C289.391304 320.556522 271.582609 338.365217 244.869565 338.365217zM1021.773913 629.982609c0-142.469565-142.469565-258.469565-302.191304-258.469565-169.73913 0-302.191304 115.756522-302.191305 258.469565 0 142.469565 132.452174 258.469565 302.191305 258.469565 35.617391 0 71.234783-8.904348 106.852174-17.808696l97.947826 53.426087-26.713044-89.043478C969.573913 779.130435 1021.773913 709.121739 1021.773913 629.982609zM616.626087 583.234783c-17.808696 0-35.617391-17.808696-35.617391-35.617391 0-17.808696 17.808696-35.617391 35.617391-35.617392s35.617391 17.808696 35.617391 35.617392C652.243478 565.426087 634.434783 583.234783 616.626087 583.234783zM814.747826 583.234783c-17.808696 0-35.617391-17.808696-35.617391-35.617391 0-17.808696 17.808696-35.617391 35.617391-35.617392s35.617391 17.808696 35.617391 35.617392C850.365217 565.426087 832.556522 583.234783 814.747826 583.234783z" fill="#ffffff" p-id="4287"></path>
+                                </svg>
+                            </div>
+                            <div class="social-name">Vertigob</div>
+                        </a>
+                    </div>
+                    <div class="social-item">
+                        <a href="https://www.xiaohongshu.com/user/profile/5cfd7dc8000000001703962d?xhsshare=CopyLink&appuid=5fd1c9ff000000000101f025&apptime=1732140558" target="_blank" style="text-decoration: none;">
+                            <div class="social-icon">
+                                <span style="font-size: 40px; line-height: 1;">📕</span>
+                            </div>
+                            <div class="social-name">Vertigob</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function openModal(imgSrc) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            modal.style.display = "block";
+            modalImg.src = imgSrc;
+        }
+
+        function closeModal() {
+            document.getElementById('imageModal').style.display = "none";
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape") {
+                closeModal();
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const sections = document.querySelectorAll('section');
+            
+            window.addEventListener('scroll', function() {
+                sections.forEach(section => {
+                    const rect = section.getBoundingClientRect();
+                    if (rect.top >= 0 && rect.top <= window.innerHeight / 2) {
+                        history.replaceState(null, null, `#${section.id}`);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
